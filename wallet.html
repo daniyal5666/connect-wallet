@@ -2,28 +2,30 @@
 <html>
 <head>
   <title>Connect Wallet</title>
-  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-  <h2>Connect MetaMask</h2>
+  <h1>Connect Wallet</h1>
   <button onclick="connectWallet()">Connect</button>
   <p id="status"></p>
 
   <script>
     async function connectWallet() {
-      if (!window.ethereum) {
-        alert("MetaMask or Rabby not installed.");
+      if (typeof window.ethereum === "undefined") {
+        alert("MetaMask not found. Please install it.");
         return;
       }
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = await provider.getSigner();
-      const address = await signer.getAddress();
+      try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = await provider.getSigner();
+        const address = await signer.getAddress();
 
-      document.getElementById("status").innerText = `Connected: ${address}`;
-
-      // Optional: Send back to Google Apps Script Web App
+        document.getElementById("status").innerText = `Connected: ${address}`;
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
     }
   </script>
 </body>
