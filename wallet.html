@@ -1,29 +1,43 @@
-<script>
-  function disconnectWallet() {
-      document.getElementById("status").innerText = "Disconnected";
-      google.script.run.disconnectWallet();
-    }
-  async function connectWallet() {
-    if (typeof window.ethereum === "undefined") {
-      alert("MetaMask not found. Please install it.");
-      return;
-    }
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Connect Wallet</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+  </head>
+  <body>
+    <h1>Connect Wallet</h1>
+    <button onclick="connectWallet()">Connect</button>
 
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = await provider.getSigner();
-      const address = await signer.getAddress();
+    <button onclick="disconnectWallet()">Disconnect</button>
+    <p id="status"></p>
 
-      document.getElementById("status").innerText = `Connected: ${address}`;
+    <script>
+      async function connectWallet() {
+        if (typeof window.ethereum === "undefined") {
+          alert("MetaMask not found. Please install it.");
+          return;
+        }
 
-      // Send address to Apps Script
-      google.script.run
-        .withSuccessHandler(() => alert("Wallet connected!"))
-        .withFailureHandler((err) => alert("Script error: " + err.message))
-        .saveWalletAddress(address);
-    } catch (err) {
-      alert("Error: " + err.message);
-    }
-  }
-</script>
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          await provider.send("eth_requestAccounts", []);
+          const signer = await provider.getSigner();
+          const address = await signer.getAddress();
+
+          document.getElementById("status").innerText = `Connected: ${address}`;
+          google.script.run
+            .withSuccessHandler(() => alert("Wallet connected!"))
+            .withFailureHandler((err) => alert("Script error: " + err.message))
+            .saveWalletAddress(address);
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      }
+
+      function disconnectWallet() {
+        document.getElementById("status").innerText = "Disconnected";
+        google.script.run.disconnectWallet();
+      }
+    </script>
+  </body>
+</html>
