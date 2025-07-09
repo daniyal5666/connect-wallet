@@ -1,4 +1,8 @@
 <script>
+  function disconnectWallet() {
+      document.getElementById("status").innerText = "Disconnected";
+      google.script.run.disconnectWallet();
+    }
   async function connectWallet() {
     if (typeof window.ethereum === "undefined") {
       alert("MetaMask not found. Please install it.");
