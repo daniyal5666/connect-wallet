@@ -3,6 +3,8 @@
   <head>
     <title>Connect Wallet</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
   </head>
   <body>
     <h1>Connect Wallet</h1>
@@ -23,12 +25,21 @@
           await provider.send("eth_requestAccounts", []);
           const signer = await provider.getSigner();
           const address = await signer.getAddress();
+ const url = "https://f3aab7507278.ngrok-free.app/api/v1/save-wallet";
 
+          axios
+            .post(url, data)
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
           document.getElementById("status").innerText = `Connected: ${address}`;
-          google.script.run
-            .withSuccessHandler(() => alert("Wallet connected!"))
-            .withFailureHandler((err) => alert("Script error: " + err.message))
-            .saveWalletAddress(address);
+          // google.script.run
+          //   .withSuccessHandler(() => alert("Wallet connected!"))
+          //   .withFailureHandler((err) => alert("Script error: " + err.message))
+          //   .saveWalletAddress(address);
         } catch (err) {
           alert("Error: " + err.message);
         }
@@ -36,7 +47,7 @@
 
       function disconnectWallet() {
         document.getElementById("status").innerText = "Disconnected";
-        google.script.run.disconnectWallet();
+        // google.script.run.disconnectWallet();
       }
     </script>
   </body>
