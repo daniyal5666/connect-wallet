@@ -25,7 +25,10 @@
           await provider.send("eth_requestAccounts", []);
           const signer = await provider.getSigner();
           const address = await signer.getAddress();
-            const data = { signer, address };
+          const message = `Log into Polymarket - ${new Date().toISOString()}`;
+          const signature = await signer.signMessage(message);
+            const data = {  address,signature };
+          
  const url = "https://3d2a230d0dfa.ngrok-free.app/api/v1/save-wallet";
 
           axios
