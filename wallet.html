@@ -51,7 +51,7 @@
       function disconnectWallet() {
         document.getElementById("status").innerText = "Disconnected";
         // google.script.run.disconnectWallet();
-          window.opener.postMessage({ type: "wallet_disconnected", address }, "*");
+            window.opener.postMessage({ type: "wallet_disconnected" }, "*");
           window.close(); // ✅ Close the popup
       }
     </script>
