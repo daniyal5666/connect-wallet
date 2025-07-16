@@ -22,23 +22,43 @@
         try {
           const provider = new ethers.BrowserProvider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
-          const signer = await provider.getSigner();
-          const address = await signer.getAddress();
-          // const message = `Log into Polymarket - ${new Date().toISOString()}`;
-          const message = `Log into Polymarket - ${new Date()
-            .toISOString()
-            .slice(0, 10)}`;
-          const signature = await signer.signMessage(message);
-          const data = { address, signature, message };
+          let sessionSignature = localStorage.getItem("session_signature");
+          let address = "";
+          if (sessionSignature) {
+            const signer = await provider.getSigner();
 
-          const url = "https://c3e8715df444.ngrok-free.app/api/v1/save-wallet";
+            address = await signer.getAddress();
 
-          axios.post(url, data);
+            // const message = `Log into Polymarket - ${new Date().toISOString()}`;
 
-          window.opener.postMessage({ type: "wallet_connected", address }, "*");
-          window.close(); // ✅ Close the popup
+            const message = `Log into Polymarket - ${new Date()
+              .toISOString()
+              .slice(0, 10)}`;
 
-          document.getElementById("status").innerText = `Connected: ${address}`;
+            const signature = await signer.signMessage(message);
+
+            localStorage.setItem("session_signature", signature);
+            localStorage.setItem("wallet_address", address);
+
+            const data = { address, signature, message };
+
+            const url =
+              "https://c3e8715df444.ngrok-free.app/api/v1/save-wallet";
+
+            axios.post(url, data);
+
+            window.opener.postMessage(
+              { type: "wallet_connected", address },
+              "*"
+            );
+
+            window.close(); // ✅ Close the popup
+
+            document.getElementById(
+              "status"
+            ).innerText = `Connected: ${address}`;
+          } else address = localStorage.getItem("wallet_address");
+
           // google.script.run
           //   .withSuccessHandler(() => alert("Wallet connected!"))
           //   .withFailureHandler((err) => alert("Script error: " + err.message))
