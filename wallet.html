@@ -40,6 +40,11 @@
             .catch((error) => {
               console.error(error);
             });
+             window.opener.postMessage(
+      { type: "wallet_connected", address },
+      "*"
+    );
+    window.close(); // ✅ Close the popup
           document.getElementById("status").innerText = `Connected: ${address}`;
           // google.script.run
           //   .withSuccessHandler(() => alert("Wallet connected!"))
