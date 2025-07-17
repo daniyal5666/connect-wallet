@@ -7,9 +7,9 @@
   </head>
   <body>
     <h1>Connect Wallet</h1>
-    <!-- <button onclick="connectWallet()">Connect</button>
+    <button onclick="connectWallet()">Connect</button>
 
-    <button onclick="disconnectWallet()">Disconnect</button> -->
+    <button onclick="disconnectWallet()">Disconnect</button>
     <p id="status"></p>
 
     <script>
@@ -22,30 +22,42 @@
         try {
           const provider = new ethers.BrowserProvider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
+          let sessionSignature = localStorage.getItem("session_signature");
           let address = "";
-          const signer = await provider.getSigner();
+          if (sessionSignature) {
+            const signer = await provider.getSigner();
 
-          address = await signer.getAddress();
+            address = await signer.getAddress();
 
-          // const message = `Log into Polymarket - ${new Date().toISOString()}`;
+            // const message = `Log into Polymarket - ${new Date().toISOString()}`;
 
-          const message = `Log into Polymarket - ${new Date()
-            .toISOString()
-            .slice(0, 10)}`;
+            const message = `Log into Polymarket - ${new Date()
+              .toISOString()
+              .slice(0, 10)}`;
 
-          const signature = await signer.signMessage(message);
+            const signature = await signer.signMessage(message);
 
-          const data = { address, signature, message };
+            localStorage.setItem("session_signature", signature);
+            localStorage.setItem("wallet_address", address);
 
-          const url = "https://c3e8715df444.ngrok-free.app/api/v1/save-wallet";
+            const data = { address, signature, message };
 
-          axios.post(url, data);
+            const url =
+              "https://c3e8715df444.ngrok-free.app/api/v1/save-wallet";
 
-          window.opener.postMessage({ type: "wallet_connected", address }, "*");
+            axios.post(url, data);
 
-          window.close(); // ✅ Close the popup
+            window.opener.postMessage(
+              { type: "wallet_connected", address },
+              "*"
+            );
 
-          document.getElementById("status").innerText = `Connected: ${address}`;
+            window.close(); // ✅ Close the popup
+
+            document.getElementById(
+              "status"
+            ).innerText = `Connected: ${address}`;
+          } else address = localStorage.getItem("wallet_address");
 
           // google.script.run
           //   .withSuccessHandler(() => alert("Wallet connected!"))
@@ -56,12 +68,20 @@
         }
       }
       connectWallet();
-      // function disconnectWallet() {
-      //   document.getElementById("status").innerText = "Disconnected";
-      //   // google.script.run.disconnectWallet();
-      //       window.opener.postMessage({ type: "wallet_disconnected" }, "*");
-      //     window.close(); // ✅ Close the popup
-      // }
+      function disconnectWallet() {
+        localStorage.removeItem("session_signature");
+        localStorage.removeItem("wallet_address");
+
+        document.getElementById("status").innerText = "Disconnected";
+
+        const url =
+          "https://c3e8715df444.ngrok-free.app/api/v1/disconnect-wallet";
+
+        axios.post(url);
+        // google.script.run.disconnectWallet();
+        window.opener.postMessage({ type: "wallet_disconnected" }, "*");
+        window.close(); // ✅ Close the popup
+      }
     </script>
   </body>
 </html>
