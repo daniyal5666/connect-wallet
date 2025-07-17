@@ -14,15 +14,17 @@
 
     <script>
       async function connectWallet() {
+        console.log("..........triger 1");
         if (typeof window.ethereum === "undefined") {
           alert("MetaMask not found. Please install it.");
           return;
         }
-
+        console.log("..........triger 2");
         try {
           const provider = new ethers.BrowserProvider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
           let sessionSignature = localStorage.getItem("session_signature");
+          console.log(sessionSignature, "..........seassion storqge");
           let address = "";
           if (sessionSignature) {
             const signer = await provider.getSigner();
