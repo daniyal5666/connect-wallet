@@ -23,7 +23,7 @@
           const provider = new ethers.BrowserProvider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
           let sessionSignature = localStorage.getItem("session_signature");
-          console.log({ sessionSignature, address });
+          console.log({ sessionSignature });
 
           let address = "";
           // if (!sessionSignature) {
