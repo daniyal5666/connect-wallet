@@ -24,7 +24,7 @@
           await provider.send("eth_requestAccounts", []);
           let sessionSignature = localStorage.getItem("session_signature");
           let address = "";
-          if (sessionSignature) {
+          if (!sessionSignature) {
             const signer = await provider.getSigner();
 
             address = await signer.getAddress();
