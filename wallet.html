@@ -7,26 +7,24 @@
   </head>
   <body>
     <h1>Connect Wallet</h1>
-    <button onclick="connectWallet()">Connect</button>
+    <!-- <button onclick="connectWallet()">Connect</button>
 
-    <button onclick="disconnectWallet()">Disconnect</button>
+    <button onclick="disconnectWallet()">Disconnect</button> -->
     <p id="status"></p>
 
     <script>
       async function connectWallet() {
-        console.log("..........triger 1");
         if (typeof window.ethereum === "undefined") {
           alert("MetaMask not found. Please install it.");
           return;
         }
-        console.log("..........triger 2");
+
         try {
           const provider = new ethers.BrowserProvider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
           let sessionSignature = localStorage.getItem("session_signature");
-          console.log(sessionSignature, "..........seassion storqge");
           let address = "";
-          // if (sessionSignature) {
+          if (sessionSignature) {
             const signer = await provider.getSigner();
 
             address = await signer.getAddress();
@@ -45,7 +43,7 @@
             const data = { address, signature, message };
 
             const url =
-              "https://7f566d3c391b.ngrok-free.app/api/v1/save-wallet";
+              "https://c3e8715df444.ngrok-free.app/api/v1/save-wallet";
 
             axios.post(url, data);
 
@@ -59,7 +57,7 @@
             document.getElementById(
               "status"
             ).innerText = `Connected: ${address}`;
-          // } else address = localStorage.getItem("wallet_address");
+          } else address = localStorage.getItem("wallet_address");
 
           // google.script.run
           //   .withSuccessHandler(() => alert("Wallet connected!"))
@@ -69,14 +67,13 @@
           alert("Error: " + err.message);
         }
       }
-
-      function disconnectWallet() {
-        localStorage.removeItem("session_signature");
-        localStorage.removeItem("wallet_address");
-        document.getElementById("status").innerText = "Disconnected";
-        window.opener?.postMessage({ type: "wallet_disconnected" }, "*");
-        window.close();
-      }
+      connectWallet();
+      // function disconnectWallet() {
+      //   document.getElementById("status").innerText = "Disconnected";
+      //   // google.script.run.disconnectWallet();
+      //       window.opener.postMessage({ type: "wallet_disconnected" }, "*");
+      //     window.close(); // ✅ Close the popup
+      // }
     </script>
   </body>
 </html>
