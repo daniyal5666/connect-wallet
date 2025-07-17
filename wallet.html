@@ -67,14 +67,7 @@
           alert("Error: " + err.message);
         }
       }
-      // connectWallet();
-      // function disconnectWallet() {
-      //   document.getElementById("status").innerText = "Disconnected";
-      //   // google.script.run.disconnectWallet();
-      //       window.opener.postMessage({ type: "wallet_disconnected" }, "*");
-      //     window.close(); // ✅ Close the popup
-      // }
-      
+
       function disconnectWallet() {
         localStorage.removeItem("session_signature");
         localStorage.removeItem("wallet_address");
