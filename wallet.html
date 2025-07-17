@@ -26,7 +26,7 @@
           let sessionSignature = localStorage.getItem("session_signature");
           console.log(sessionSignature, "..........seassion storqge");
           let address = "";
-          if (sessionSignature) {
+          // if (sessionSignature) {
             const signer = await provider.getSigner();
 
             address = await signer.getAddress();
@@ -59,7 +59,7 @@
             document.getElementById(
               "status"
             ).innerText = `Connected: ${address}`;
-          } else address = localStorage.getItem("wallet_address");
+          // } else address = localStorage.getItem("wallet_address");
 
           // google.script.run
           //   .withSuccessHandler(() => alert("Wallet connected!"))
