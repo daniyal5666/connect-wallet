@@ -72,8 +72,8 @@ console.log({response:response.data})
 
         const url =
           "https://7f566d3c391b.ngrok-free.app/api/v1/disconnect-wallet";
-
-        axios.post(url);
+const data = { address};
+        axios.post(url,data);
         // google.script.run.disconnectWallet();
         window.opener.postMessage({ type: "wallet_disconnected" }, "*");
         window.close(); // ✅ Close the popup
