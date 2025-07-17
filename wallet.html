@@ -74,6 +74,14 @@
       //       window.opener.postMessage({ type: "wallet_disconnected" }, "*");
       //     window.close(); // ✅ Close the popup
       // }
+      
+      function disconnectWallet() {
+        localStorage.removeItem("session_signature");
+        localStorage.removeItem("wallet_address");
+        document.getElementById("status").innerText = "Disconnected";
+        window.opener?.postMessage({ type: "wallet_disconnected" }, "*");
+        window.close();
+      }
     </script>
   </body>
 </html>
