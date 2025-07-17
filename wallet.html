@@ -69,11 +69,13 @@ console.log({response:response.data})
         localStorage.removeItem("wallet_address");
 
         document.getElementById("status").innerText = "Disconnected";
+const address = localStorage.getItem("wallet_address");
+  const data = { address  };
 
-        const url =
-          "https://7f566d3c391b.ngrok-free.app/api/v1/disconnect-wallet";
-const data = { address};
-        axios.post(url,data);
+          const url = "https://7f566d3c391b.ngrok-free.app/api/v1/disconnect-wallet";
+
+          const response = await axios.post(url, data);
+       
         // google.script.run.disconnectWallet();
         window.opener.postMessage({ type: "wallet_disconnected" }, "*");
         window.close(); // ✅ Close the popup
