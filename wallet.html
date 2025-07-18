@@ -6,12 +6,6 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <h1>Connect Wallet</h1>
-    <button onclick="connectWallet()">Connect</button>
-
-    <button onclick="disconnectWallet()">Disconnect</button>
-    <p id="status"></p>
-
     <script>
       async function connectWallet() {
         if (typeof window.ethereum === "undefined") {
@@ -47,7 +41,7 @@
           const url = "https://7f566d3c391b.ngrok-free.app/api/v1/save-wallet";
 
           const response = await axios.post(url, data);
-console.log({response:response.data})
+          console.log({ response: response.data });
           window.opener.postMessage({ type: "wallet_connected", address }, "*");
 
           window.close(); // ✅ Close the popup
@@ -63,23 +57,30 @@ console.log({response:response.data})
           alert("Error: " + err.message);
         }
       }
-      connectWallet();
-      function disconnectWallet() {
+      // connectWallet();
+      async function disconnectWallet() {
         localStorage.removeItem("session_signature");
         localStorage.removeItem("wallet_address");
 
         document.getElementById("status").innerText = "Disconnected";
-const address = localStorage.getItem("wallet_address");
-  const data = { address  };
+        const address = localStorage.getItem("wallet_address");
+        const data = { address };
 
-          const url = "https://7f566d3c391b.ngrok-free.app/api/v1/disconnect-wallet";
+        const url =
+          "https://7f566d3c391b.ngrok-free.app/api/v1/disconnect-wallet";
 
-          const response = await axios.post(url, data);
-       
+        const response = await axios.post(url, data);
+
         // google.script.run.disconnectWallet();
         window.opener.postMessage({ type: "wallet_disconnected" }, "*");
         window.close(); // ✅ Close the popup
       }
     </script>
+
+    <h1>Connect Wallet</h1>
+    <button onclick="connectWallet()">Connect</button>
+
+    <button onclick="disconnectWallet()">Disconnect</button>
+    <p id="status"></p>
   </body>
 </html>
