@@ -21,7 +21,10 @@
       //   const BACKEND_URL = "https://fdae93c73770.ngrok-free.app";
 
       async function connectWallet() {
-        if (!BACKEND_URL) return;
+        if (!BACKEND_URL) {
+          alert("Backend URL not yet received. Please wait a moment...");
+          return;
+        }
         if (typeof window.ethereum === "undefined") {
           alert("MetaMask not found. Please install it.");
           return;
@@ -73,7 +76,10 @@
       }
 
       async function disconnectWallet() {
-        if (!BACKEND_URL) return;
+        if (!BACKEND_URL) {
+          alert("Backend URL not yet received. Please wait a moment...");
+          return;
+        }
 
         localStorage.removeItem("session_signature");
         localStorage.removeItem("wallet_address");
