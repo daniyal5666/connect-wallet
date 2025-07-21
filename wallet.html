@@ -7,7 +7,7 @@
   </head>
   <body>
     <script>
-      const BACKEND_URL='https://fdae93c73770.ngrok-free.app'
+      const BACKEND_URL1='https://fdae93c73770.ngrok-free.app'
       async function connectWallet() {
         if (typeof window.ethereum === "undefined") {
           alert("MetaMask not found. Please install it.");
@@ -39,7 +39,7 @@
 
           const data = { address, signature, message };
 
-          const url = `${BACKEND_URL}/api/v1/save-wallet`;
+          const url = `${BACKEND_URL1}/api/v1/save-wallet`;
 
           const response = await axios.post(url, data);
           console.log({ response: response.data });
@@ -68,7 +68,7 @@
         const data = { address };
 
         const url =
-         `${BACKEND_URL}/api/v1/disconnect-wallet`;
+         `${BACKEND_URL1}/api/v1/disconnect-wallet`;
 
         const response = await axios.post(url, data);
 
