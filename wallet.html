@@ -10,7 +10,7 @@
       // Listen for message from opener
       window.addEventListener("message", function (event) {
         if (event.data?.type === "backend_url") {
-          BACKEND_URL1 = event.data.backendUrl;
+          BACKEND_URL = event.data.backendUrl;
           console.log("Received backend URL:", BACKEND_URL);
         }
       });
@@ -51,7 +51,7 @@
 
           const data = { address, signature, message };
 
-          const url = `${BACKEND_URL1}/api/v1/save-wallet`;
+          const url = `${BACKEND_URL}/api/v1/save-wallet`;
 
           const response = await axios.post(url, data);
           console.log({ response: response.data });
@@ -79,7 +79,7 @@
         const address = localStorage.getItem("wallet_address");
         const data = { address };
 
-        const url = `${BACKEND_URL1}/api/v1/disconnect-wallet`;
+        const url = `${BACKEND_URL}/api/v1/disconnect-wallet`;
 
         const response = await axios.post(url, data);
 
