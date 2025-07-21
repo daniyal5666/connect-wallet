@@ -4,30 +4,12 @@
     <title>Wallet</title>
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      let BACKEND_URL = ""; // initially empty
-
-      // Listen for message from opener
-      window.addEventListener("message", function (event) {
-        if (event.data?.type === "backend_url") {
-          BACKEND_URL = event.data.BASE_URL;
-          console.log("Received backend URL:", BACKEND_URL);
-          document.getElementById(
-            "backendUrlDisplay"
-          ).innerText = `Received BACKEND_URL: ${BACKEND_URL}`;
-        }
-      });
-    </script>
   </head>
   <body>
     <script>
-      //   const BACKEND_URL = "https://fdae93c73770.ngrok-free.app";
+      const BACKEND_URL = "https://fdae93c73770.ngrok-free.app";
 
       async function connectWallet() {
-        if (!BACKEND_URL) {
-          alert("Backend URL not yet received. Please wait a moment...");
-          return;
-        }
         if (typeof window.ethereum === "undefined") {
           alert("MetaMask not found. Please install it.");
           return;
@@ -79,11 +61,6 @@
       }
 
       async function disconnectWallet() {
-        if (!BACKEND_URL) {
-          alert("Backend URL not yet received. Please wait a moment...");
-          return;
-        }
-
         localStorage.removeItem("session_signature");
         localStorage.removeItem("wallet_address");
 
