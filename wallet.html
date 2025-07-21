@@ -10,7 +10,7 @@
       // Listen for message from opener
       window.addEventListener("message", function (event) {
         if (event.data?.type === "backend_url") {
-          BACKEND_URL = event.data.backendUrl;
+          BACKEND_URL = event.data.BASE_URL;
           console.log("Received backend URL:", BACKEND_URL);
         }
       });
