@@ -37,7 +37,8 @@
     </div>
 
     <script>
-      const BACKEND_URL = "https://labubu.4xbrokers.com";
+      // const BACKEND_URL = "https://labubu.4xbrokers.com";
+    const BACKEND_URL = "https://d1dd179fdf9f.ngrok-free.app";
 
       async function connectWallet() {
         if (typeof window.ethereum === "undefined") {
@@ -58,13 +59,45 @@
           const message = `Log into Polymarket - ${new Date()
             .toISOString()
             .slice(0, 10)}`;
-          const signature = await signer.signMessage(message);
+          // const signature = await signer.signMessage(message);          
+
+        const timestamp = Math.floor(Date.now() / 1000).toString(); // SECONDS, not ms
+        const nonce = 0;
+        
+        const domain = {
+          name: "ClobAuthDomain",
+          version: "1",
+          chainId: 137,
+        };
+        
+        const types = {
+          ClobAuth: [
+            { name: "address", type: "address" },
+            { name: "timestamp", type: "string" },
+            { name: "nonce", type: "uint256" },
+            { name: "message", type: "string" },
+          ],
+        };
+
+        const value = {
+          address,
+          timestamp,
+          nonce,
+          message: "This message attests that I control the given wallet",
+        };
+
+
+        const signature = await signer._signTypedData(domain, types, value);
 
           localStorage.setItem("session_signature", signature);
           localStorage.setItem("wallet_address", address);
 
-          const data = { address, signature, message };
-          const url = `${BACKEND_URL}/api/v1/save-wallet`;
+          // const data = { address, signature, message };
+          // const url = `${BACKEND_URL}/api/v1/save-wallet`;
+          
+        const data = { address, signature, timestamp, nonce };
+        const url = `${BACKEND_URL}/api/v1/derive-api-key`;
+
           const response = await axios.post(url, data);
 
           console.log({ response: response.data });
