@@ -38,7 +38,7 @@
 
     <script>
       // const BACKEND_URL = "https://labubu.4xbrokers.com";
-    const BACKEND_URL = "https://d1dd179fdf9f.ngrok-free.app";
+    const BACKEND_URL = "https://333eeb58c9ee.ngrok-free.app";
 
       async function connectWallet() {
         if (typeof window.ethereum === "undefined") {
@@ -87,7 +87,7 @@
         };
 
 
-        const signature = await signer._signTypedData(domain, types, value);
+        const signature = await signer.signTypedData(domain, types, value);
 
           localStorage.setItem("session_signature", signature);
           localStorage.setItem("wallet_address", address);
